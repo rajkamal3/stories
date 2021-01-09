@@ -1,13 +1,13 @@
 const initState = {
-    theme: 'default'
+    user: ''
 };
 
 const Reducer = (state = initState, action) => {
     switch (action.type) {
-        case 'CHANGE_THEME':
+        case 'NEXT_USER':
             return {
                 ...state,
-                theme: action.theme
+                user: action.user
             };
         default:
             return state;
