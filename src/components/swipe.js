@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import Stories from 'react-insta-stories';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Swipe() {
     const [currentUser, setCurrentUser] = useState('');
     const [stories, setStories] = useState();
+
+    const appTheme = useSelector(state => state.theme);
+
+    const dispatch = useDispatch();
+
+    function changeTheme(theme) {
+        dispatch({
+            type: 'CHANGE_THEME',
+            theme: theme
+        });
+    }
 
     let theCUser = '';
 
@@ -87,6 +99,8 @@ function Swipe() {
 
     return (
         <>
+            <div>{appTheme}</div>
+            <div onClick={() => changeTheme('nighty night')}>huellhuell</div>
             <div
                 style={{
                     display: 'flex',
