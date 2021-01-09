@@ -1,30 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Stories from 'react-insta-stories';
 
 function Swipe() {
     const [currentUser, setCurrentUser] = useState('');
     const [stories, setStories] = useState();
 
+    let theCUser = '';
+
+    let status = useEffect(() => {
+        setCurrentUser(theCUser);
+    }, [theCUser]);
+
     const users = [
         {
             name: 'Dinesh Chugtai',
             dp: './img/dinesh.jpg',
-            stories: ['./img/d1.jpg', './img/d2.jpg', './img/d3.jpg']
+            stories: ['./img/w1.jpg', './img/w2.jpg', './img/w3.jpg']
         },
         {
             name: 'Monica Hall',
             dp: './img/monica.jpg',
-            stories: ['./img/m1.jpg', './img/m2.jpg']
+            stories: ['./img/w4.jpg', './img/w5.jpg']
         },
         {
             name: 'Richard Hendricks',
             dp: './img/richard.jpg',
-            stories: ['./img/r1.jpg', './img/r2.jpg', './img/r3.jpg', './img/r4.jpg']
+            stories: ['./img/w6.jpg', './img/w7.jpg', './img/w8.jpg', './img/w9.jpg']
         },
         {
             name: 'Erlich Bachman',
             dp: './img/erlich.jpg',
-            stories: ['./img/p.mp4', './img/monica.jpg', './img/richard.jpg', './img/monica.jpg']
+            stories: ['./img/w10.jpg', './img/monica.jpg', './img/richard.jpg', './img/monica.jpg']
         },
         {
             name: 'Jared Dunn',
@@ -37,12 +43,13 @@ function Swipe() {
         return user.name;
     });
 
-    console.log(usersOrder);
-
     const handleUser = name => {
         setCurrentUser(name);
-        console.log(name);
+        theCUser = name;
+        // console.log(name);
         currentStory(name);
+        // console.log(event.target.getAttribute('value'));
+        // setCurrentUser(event.target.getAttribute('value'));
     };
 
     const currentStory = cUser => {
@@ -51,16 +58,32 @@ function Swipe() {
                 return user;
             }
         });
+
+        // setCurrentUser(cUser);
+        theCUser = cUser;
+
         var data = curr.filter(function (element) {
             return element !== undefined;
         });
         setStories(data);
-        console.log(data);
+        // closeStories(data);
+        // console.log(data);
     };
 
-    const closeStories = () => {
-        console.log('asdadb');
+    const nextStory = curUser => {
+        var currr = curUser;
+        var nextUserIndex = usersOrder.indexOf(currr) + 1;
+        var nextUser = usersOrder[nextUserIndex];
+
+        console.log(nextUser);
+        // setCurrentUser(nextUser);
+        theCUser = nextUser;
+        // console.log(currentUser);
     };
+
+    // const closeStories = () => {
+    //     console.log(currentUser);
+    // };
 
     return (
         <>
@@ -68,7 +91,6 @@ function Swipe() {
                 style={{
                     display: 'flex',
                     width: '75vw',
-                    // backgroundColor: 'rebeccapurple',
                     justifyContent: 'space-between',
                     marginBottom: '30px'
                 }}
@@ -77,6 +99,7 @@ function Swipe() {
                     return (
                         <div
                             key={user.name}
+                            value={user.name}
                             onClick={() => handleUser(user.name)}
                             style={{
                                 textAlign: '-webkit-center',
@@ -99,17 +122,19 @@ function Swipe() {
                 })}
             </div>
             <div>
-                {currentUser && (
+                {currentUser ? (
                     <Stories
                         stories={stories[0].stories}
-                        onStoryEnd={() => setCurrentUser(usersOrder[1])}
-                        onAllStoriesEnd={() => closeStories()}
-                        defaultInterval={2000}
+                        onAllStoriesEnd={() => nextStory(currentUser)}
+                        defaultInterval={300}
                         width={432}
                         height={768}
                     />
+                ) : (
+                    <h1>Click on a contact to view their status updates</h1>
                 )}
             </div>
+            <div onClick={() => console.log(currentUser)}>click hue</div>
         </>
     );
 }
