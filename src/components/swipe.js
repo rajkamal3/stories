@@ -4,29 +4,41 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const users = [
     {
-        name: 'Dinesh Chugtai',
-        dp: './img/dinesh.jpg',
-        stories: ['./img/w1.jpg', './img/w2.jpg', './img/w3.jpg']
-    },
-    {
-        name: 'Richard Hendricks',
+        name: 'Richard',
         dp: './img/richard.jpg',
-        stories: ['./img/w6.jpg', './img/w7.jpg', './img/w8.jpg', './img/w9.jpg']
+        stories: ['./img/w3.jpg']
     },
     {
-        name: 'Erlich Bachman',
-        dp: './img/erlich.jpg',
-        stories: ['./img/w10.jpg', './img/monica.jpg', './img/richard.jpg', './img/monica.jpg']
+        name: 'Gilfoyle',
+        dp: './img/gilfoyle.jpg',
+        stories: [
+            './img/w8.jpg',
+            {
+                url: './vid/q.mp4',
+                duration: 5000,
+                type: 'video'
+            }
+        ]
     },
     {
-        name: 'Monica Hall',
-        dp: './img/monica.jpg',
-        stories: ['./img/w4.jpg', './img/w5.jpg']
+        name: 'Dinesh',
+        dp: './img/dinesh.jpg',
+        stories: ['./img/w1.jpg', './img/d1.jpg']
     },
     {
-        name: 'Jared Dunn',
+        name: 'Jared',
         dp: './img/jared.jpg',
-        stories: ['./img/dinesh.jpg', './img/richard.jpg', 'dfjdkfdjn']
+        stories: ['./img/w5.jpg']
+    },
+    {
+        name: 'Erlich',
+        dp: './img/erlich.jpg',
+        stories: ['./img/w6.jpg']
+    },
+    {
+        name: 'Monica',
+        dp: './img/monica.jpg',
+        stories: ['./img/w7.jpg']
     }
 ];
 
@@ -47,6 +59,20 @@ function Swipe() {
         currentStory(name);
     };
 
+    const nextStory = curUser => {
+        var currr = curUser;
+        var nextUserIndex = usersOrder.indexOf(currr) + 1;
+        var nextUser = usersOrder[nextUserIndex];
+
+        // console.log(nextUser);
+        dispatch({
+            type: 'NEXT_USER',
+            user: nextUser
+        });
+
+        currentStory(nextUser);
+    };
+
     const currentStory = cUser => {
         const curr = users.map(user => {
             if (user.name === cUser) {
@@ -58,27 +84,26 @@ function Swipe() {
             return element !== undefined;
         });
 
-        console.log(data);
-        setStories(data[0].stories);
-    };
+        // console.log(data);
 
-    const nextStory = curUser => {
-        var currr = curUser;
-        var nextUserIndex = usersOrder.indexOf(currr) + 1;
-        var nextUser = usersOrder[nextUserIndex];
-
-        console.log(nextUser);
-        dispatch({
-            type: 'NEXT_USER',
-            user: nextUser
-        });
-
-        currentStory(nextUser);
+        if (data.length !== 0) {
+            document.querySelector('.storyHolder').style.display = 'block';
+            const currUserStyle = Array.from(document.querySelectorAll('.userForStyle'));
+            for (let i = 0; i < currUserStyle.length; i++) {
+                if (currUserStyle[i].innerText === data[0].name) {
+                    currUserStyle[i].querySelector('img').style.border = '3px dotted #25D366';
+                } else if (currUserStyle[i].innerText !== data[0].name) {
+                    currUserStyle[i].querySelector('img').style.border = 'none';
+                }
+            }
+            setStories(data[0].stories);
+        } else {
+            document.querySelector('.storyHolder').style.display = 'none';
+        }
     };
 
     return (
         <>
-            {/* <div>{userFromStore}</div> */}
             <div
                 style={{
                     display: 'flex',
@@ -97,6 +122,7 @@ function Swipe() {
                                 textAlign: '-webkit-center',
                                 cursor: 'pointer'
                             }}
+                            className="userForStyle"
                         >
                             <img
                                 src={user.dp}
@@ -105,7 +131,8 @@ function Swipe() {
                                     display: 'block',
                                     width: '50px',
                                     height: '50px',
-                                    borderRadius: '500px'
+                                    borderRadius: '500px',
+                                    boxSizing: 'border-box'
                                 }}
                             />
                             {user.name}
@@ -117,25 +144,28 @@ function Swipe() {
                 style={{
                     textAlign: 'center'
                 }}
+                className="storyHolder"
             >
                 {currentUser ? (
-                    <Stories
-                        stories={stories}
-                        onAllStoriesEnd={() => nextStory(currentUser)}
-                        defaultInterval={3000}
-                        width={750}
-                        height={435}
-                        storyStyles={{
-                            width: 'auto',
-                            maxWidth: '100%',
-                            maxHeight: '100%',
-                            margin: 'auto',
-                            marginLeft: '160px'
-                        }}
-                    />
+                    <>
+                        <Stories
+                            stories={stories}
+                            onAllStoriesEnd={() => nextStory(currentUser)}
+                            defaultInterval={3000}
+                            width={750}
+                            height={435}
+                            storyStyles={{
+                                width: 'auto',
+                                maxWidth: '100%',
+                                maxHeight: '100%',
+                                margin: 'auto',
+                                marginLeft: '160px'
+                            }}
+                        />
+                    </>
                 ) : (
                     <>
-                        <span data-testid="status-v3-placeholder" data-icon="status-v3-placeholder" class="">
+                        <span data-testid="status-v3-placeholder" data-icon="status-v3-placeholder">
                             <svg
                                 id="Layer_1"
                                 xmlns="http://www.w3.org/2000/svg"
