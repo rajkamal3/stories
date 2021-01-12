@@ -1,6 +1,6 @@
 # Snapchat/WhatsApp model stories with React.js
 
-# [Stories](https://stories-thunderpod.netlify.app/).
+# [Stories](https://stories-thunderpod.netlify.app/)
 
 ## Available Scripts
 
