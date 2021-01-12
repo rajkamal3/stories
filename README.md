@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Snapchat/WhatsApp model stories with React.js
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Stories](https://stories-thunderpod.netlify.app/).
 
 ## Available Scripts
 
